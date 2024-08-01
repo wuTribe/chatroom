@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ChatEndpoint {
 
-    private final static String CURRENT_USER = "currentUser";
+    public final static String CURRENT_USER = "currentUser";
 
     // 保存在线的用户，key为用户名，value为 Session 对象
     private static final Map<String, Session> onlineUsers = new ConcurrentHashMap<>();
@@ -68,6 +68,10 @@ public class ChatEndpoint {
             String currentUser = (String) this.httpSession.getAttribute(CURRENT_USER);
             String messageToSend = MessageUtils.getMessage(false, currentUser, tempMessage);
 
+            if (session == null) {
+                log.error("session is null!");
+                return;
+            }
             session.getBasicRemote().sendText(messageToSend);
         } catch (Exception exception) {
             exception.printStackTrace();
