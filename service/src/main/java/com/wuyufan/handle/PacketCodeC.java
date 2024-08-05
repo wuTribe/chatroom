@@ -1,8 +1,7 @@
 package com.wuyufan.handle;
 
 import com.wuyufan.bean.Command;
-import com.wuyufan.bean.packet.LoginRequestPacket;
-import com.wuyufan.bean.packet.Packet;
+import com.wuyufan.bean.packet.*;
 import com.wuyufan.bean.serializer.JSONSerializer;
 import com.wuyufan.bean.serializer.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -13,6 +12,9 @@ import java.util.Map;
 
 public class PacketCodeC {
     private static final int MAGIC_NUMBER = 0x12345678;
+
+    public static final PacketCodeC INSTANCE = new PacketCodeC();
+
 
     /**
      * 指令集
@@ -27,10 +29,28 @@ public class PacketCodeC {
     private PacketCodeC() {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         serializerMap.put(Serializer.DEFAULT.getSerializerAlgorithm(), new JSONSerializer());
     }
+
+
+    public void encode(ByteBuf byteBuf, Packet packet) {
+        // 1. 序列化 java 对象
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+        // 2. 实际编码过程
+        byteBuf.writeInt(MAGIC_NUMBER);
+        byteBuf.writeByte(packet.getVersion());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+        byteBuf.writeByte(packet.getCommand());
+        byteBuf.writeInt(bytes.length);
+        byteBuf.writeBytes(bytes);
+    }
+
 
 
     /**

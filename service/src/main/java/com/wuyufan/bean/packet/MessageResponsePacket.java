@@ -4,18 +4,14 @@ import com.wuyufan.bean.Command;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * 登录请求包
- */
-@Data
 @EqualsAndHashCode(callSuper = true)
-public class LoginRequestPacket extends Packet {
-    private Long userId;
-    private String userName;
-    private String password;
+@Data
+public class MessageResponsePacket extends Packet {
+
+    private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_REQUEST;
+        return Command.MESSAGE_RESPONSE;
     }
 }
