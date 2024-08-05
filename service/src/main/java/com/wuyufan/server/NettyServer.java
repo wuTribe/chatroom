@@ -1,6 +1,6 @@
 package com.wuyufan.server;
 
-import com.wuyufan.Constants;
+import com.wuyufan.bean.Constants;
 import com.wuyufan.handle.server.FirstServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
