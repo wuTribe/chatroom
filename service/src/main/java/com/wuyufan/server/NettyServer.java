@@ -4,6 +4,7 @@ import com.wuyufan.bean.Constants;
 import com.wuyufan.codec.PacketDecoder;
 import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.codec.Spliter;
+import com.wuyufan.server.handle.LifeCyCleTestHandler;
 import com.wuyufan.server.handle.LoginRequestHandler;
 import com.wuyufan.server.handle.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -31,6 +32,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
+                        ch.pipeline().addLast(new LifeCyCleTestHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
