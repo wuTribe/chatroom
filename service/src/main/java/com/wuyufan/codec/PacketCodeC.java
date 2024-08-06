@@ -1,4 +1,4 @@
-package com.wuyufan.handle;
+package com.wuyufan.codec;
 
 import com.wuyufan.bean.Command;
 import com.wuyufan.bean.packet.*;

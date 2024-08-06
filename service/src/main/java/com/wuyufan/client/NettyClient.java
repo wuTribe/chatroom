@@ -2,14 +2,16 @@ package com.wuyufan.client;
 
 import com.wuyufan.bean.Constants;
 import com.wuyufan.bean.packet.MessageRequestPacket;
-import com.wuyufan.handle.PacketCodeC;
-import com.wuyufan.handle.client.ClientHandler;
+import com.wuyufan.client.handle.LoginResponseHandler;
+import com.wuyufan.client.handle.MessageResponseHandler;
+import com.wuyufan.codec.PacketDecoder;
+import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.utils.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -26,10 +28,16 @@ public class NettyClient {
         bootstrap
                 .group(workerGroup)
                 .channel(NioSocketChannel.class)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ClientHandler());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         connect(bootstrap, "127.0.0.1", Constants.SERVER_PORT, 3);
@@ -66,9 +74,7 @@ public class NettyClient {
                     String line = scanner.nextLine();
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
-                    ByteBuf byteBuf = channel.alloc().ioBuffer();
-                    PacketCodeC.INSTANCE.encode(byteBuf, packet);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(packet);
                 }
             }
         }).start();
