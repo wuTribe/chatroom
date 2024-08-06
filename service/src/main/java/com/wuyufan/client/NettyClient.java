@@ -71,14 +71,12 @@ public class NettyClient {
     private static void startConsoleThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送至服务端：");
-                    Scanner scanner = new Scanner(System.in);
-                    String line = scanner.nextLine();
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
-                    channel.writeAndFlush(packet);
-                }
+                System.out.println("输入消息发送至服务端：");
+                Scanner scanner = new Scanner(System.in);
+                String line = scanner.nextLine();
+                MessageRequestPacket packet = new MessageRequestPacket();
+                packet.setMessage(line);
+                channel.writeAndFlush(packet);
             }
         }).start();
     }

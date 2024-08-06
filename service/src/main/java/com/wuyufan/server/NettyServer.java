@@ -4,6 +4,7 @@ import com.wuyufan.bean.Constants;
 import com.wuyufan.codec.PacketDecoder;
 import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.codec.Spliter;
+import com.wuyufan.server.handle.AuthHandler;
 import com.wuyufan.server.handle.LifeCyCleTestHandler;
 import com.wuyufan.server.handle.LoginRequestHandler;
 import com.wuyufan.server.handle.MessageRequestHandler;
@@ -13,7 +14,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 public class NettyServer {
 
@@ -36,6 +36,7 @@ public class NettyServer {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
