@@ -1,13 +1,14 @@
 package com.wuyufan.client;
 
 import com.wuyufan.bean.Constants;
-import com.wuyufan.bean.packet.MessageRequestPacket;
+import com.wuyufan.bean.packet.request.LoginRequestPacket;
+import com.wuyufan.bean.packet.request.MessageRequestPacket;
 import com.wuyufan.client.handle.LoginResponseHandler;
 import com.wuyufan.client.handle.MessageResponseHandler;
 import com.wuyufan.codec.PacketDecoder;
 import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.codec.Spliter;
-import com.wuyufan.utils.LoginUtil;
+import com.wuyufan.utils.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -16,13 +17,14 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class NettyClient {
+    public static volatile boolean LOGIN_FINISH = false;
+
     public static void main(String[] args) {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
@@ -69,14 +71,30 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                System.out.println("输入消息发送至服务端：");
-                Scanner scanner = new Scanner(System.in);
-                String line = scanner.nextLine();
-                MessageRequestPacket packet = new MessageRequestPacket();
-                packet.setMessage(line);
-                channel.writeAndFlush(packet);
+                try {
+                    if (!SessionUtil.hasLogin(channel)) {
+                        System.out.print("输入用户名登录：");
+                        String  username  =  sc.nextLine();
+                        loginRequestPacket.setUserName(username);
+                        loginRequestPacket.setPassword("pwd");
+                        channel.writeAndFlush(loginRequestPacket);
+                        // 等待客户端响应，登录状态变更
+                        if (!LOGIN_FINISH) {
+                            Thread.sleep(500);
+                            System.out.println("等待服务器回复登录状态...");
+                        }
+                    } else {
+                        System.out.println("输入消息发送至服务端：");
+                        long toUserId = Long.parseLong(sc.next());
+                        String message = sc.next();
+                        channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    }
+                } catch (Exception ignored) {
+                }
             }
         }).start();
     }

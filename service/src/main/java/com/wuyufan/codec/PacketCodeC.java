@@ -2,6 +2,10 @@ package com.wuyufan.codec;
 
 import com.wuyufan.bean.Command;
 import com.wuyufan.bean.packet.*;
+import com.wuyufan.bean.packet.request.LoginRequestPacket;
+import com.wuyufan.bean.packet.request.MessageRequestPacket;
+import com.wuyufan.bean.packet.response.LoginResponsePacket;
+import com.wuyufan.bean.packet.response.MessageResponsePacket;
 import com.wuyufan.bean.serializer.JSONSerializer;
 import com.wuyufan.bean.serializer.Serializer;
 import io.netty.buffer.ByteBuf;
