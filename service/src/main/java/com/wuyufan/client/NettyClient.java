@@ -5,10 +5,7 @@ import com.wuyufan.bean.packet.request.LoginRequestPacket;
 import com.wuyufan.bean.packet.request.MessageRequestPacket;
 import com.wuyufan.client.command.ConsoleCommandManager;
 import com.wuyufan.client.command.LoginConsoleCommand;
-import com.wuyufan.client.handle.CreateGroupResponseHandler;
-import com.wuyufan.client.handle.LoginResponseHandler;
-import com.wuyufan.client.handle.LogoutResponseHandler;
-import com.wuyufan.client.handle.MessageResponseHandler;
+import com.wuyufan.client.handle.*;
 import com.wuyufan.codec.PacketDecoder;
 import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.codec.Spliter;
@@ -45,6 +42,9 @@ public class NettyClient {
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new LogoutResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandle());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
@@ -89,6 +89,8 @@ public class NettyClient {
                             System.out.println("等待服务器回复登录状态...");
                         }
                     } else {
+                        System.out.println();
+                        System.out.println();
                         System.out.println("输入消息发送至服务端：");
                         manager.exe(sc, channel);
                     }

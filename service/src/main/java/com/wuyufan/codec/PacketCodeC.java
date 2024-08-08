@@ -2,14 +2,8 @@ package com.wuyufan.codec;
 
 import com.wuyufan.bean.Command;
 import com.wuyufan.bean.packet.*;
-import com.wuyufan.bean.packet.request.CreateGroupRequestPacket;
-import com.wuyufan.bean.packet.request.LoginRequestPacket;
-import com.wuyufan.bean.packet.request.LogoutRequestPacket;
-import com.wuyufan.bean.packet.request.MessageRequestPacket;
-import com.wuyufan.bean.packet.response.CreateGroupResponsePacket;
-import com.wuyufan.bean.packet.response.LoginResponsePacket;
-import com.wuyufan.bean.packet.response.LogoutResponsePacket;
-import com.wuyufan.bean.packet.response.MessageResponsePacket;
+import com.wuyufan.bean.packet.request.*;
+import com.wuyufan.bean.packet.response.*;
 import com.wuyufan.bean.serializer.JSONSerializer;
 import com.wuyufan.bean.serializer.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -44,6 +38,12 @@ public class PacketCodeC {
         packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
         packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
         packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(Command.JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(Command.QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(Command.LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
 
         serializerMap = new HashMap<>();
         serializerMap.put(Serializer.DEFAULT.getSerializerAlgorithm(), new JSONSerializer());

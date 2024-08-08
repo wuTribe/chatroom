@@ -13,6 +13,11 @@ public abstract class Packet {
     private Byte version = 1;
 
     /**
+     * 是否处理成功
+     */
+    private boolean success = true;
+
+    /**
      * 协议指令
      *
      * @return 指令
