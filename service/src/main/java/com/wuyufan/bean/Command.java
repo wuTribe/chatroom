@@ -38,4 +38,9 @@ public interface Command {
     Byte LIST_GROUP_MEMBERS_REQUEST = 13;
     /** 获取群里成员 响应*/
     Byte LIST_GROUP_MEMBERS_RESPONSE = 14;
+
+    /** 群发消息 请求*/
+    Byte GROUP_MESSAGE_REQUEST = 13;
+    /** 群发消息 响应*/
+    Byte GROUP_MESSAGE_RESPONSE = 14;
 }

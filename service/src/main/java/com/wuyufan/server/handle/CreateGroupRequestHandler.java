@@ -19,6 +19,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         List<String> userNameList = new ArrayList<>();
         // 1. 创建 channel 组
         DefaultChannelGroup channelGroup = new DefaultChannelGroup(ctx.executor());
+        channelGroup.add(ctx.channel());
         // 2. 筛选出待加入群聊的用户的 channel 和 username
         for (Long userId : userIds) {
             Channel channel = SessionUtil.getChannel(userId);
