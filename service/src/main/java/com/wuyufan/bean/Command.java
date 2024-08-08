@@ -12,4 +12,12 @@ public interface Command {
     Byte MESSAGE_REQUEST = 3;
     /** 消息 响应*/
     Byte MESSAGE_RESPONSE = 4;
+    /** 创建群组 请求*/
+    Byte CREATE_GROUP_REQUEST = 5;
+    /** 创建群组 响应*/
+    Byte CREATE_GROUP_RESPONSE = 6;
+    /** 登出 请求*/
+    Byte LOGOUT_REQUEST = 5;
+    /** 登出 响应*/
+    Byte LOGOUT_RESPONSE = 6;
 }

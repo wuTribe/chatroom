@@ -12,7 +12,7 @@ public class SessionUtil {
     private static final Map<Long, Channel> userIdChannelMap = new ConcurrentHashMap<>();
 
     public static boolean hasLogin(Channel channel) {
-        return channel.hasAttr(Attributes.SESSION);
+        return channel.attr(Attributes.SESSION).get() != null;
     }
 
     public static Session getSession(Channel channel) {

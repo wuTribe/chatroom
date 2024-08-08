@@ -4,10 +4,7 @@ import com.wuyufan.bean.Constants;
 import com.wuyufan.codec.PacketDecoder;
 import com.wuyufan.codec.PacketEncoder;
 import com.wuyufan.codec.Spliter;
-import com.wuyufan.server.handle.AuthHandler;
-import com.wuyufan.server.handle.LifeCyCleTestHandler;
-import com.wuyufan.server.handle.LoginRequestHandler;
-import com.wuyufan.server.handle.MessageRequestHandler;
+import com.wuyufan.server.handle.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -37,6 +34,8 @@ public class NettyServer {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new AuthHandler());
+                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }

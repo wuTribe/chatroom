@@ -2,9 +2,13 @@ package com.wuyufan.codec;
 
 import com.wuyufan.bean.Command;
 import com.wuyufan.bean.packet.*;
+import com.wuyufan.bean.packet.request.CreateGroupRequestPacket;
 import com.wuyufan.bean.packet.request.LoginRequestPacket;
+import com.wuyufan.bean.packet.request.LogoutRequestPacket;
 import com.wuyufan.bean.packet.request.MessageRequestPacket;
+import com.wuyufan.bean.packet.response.CreateGroupResponsePacket;
 import com.wuyufan.bean.packet.response.LoginResponsePacket;
+import com.wuyufan.bean.packet.response.LogoutResponsePacket;
 import com.wuyufan.bean.packet.response.MessageResponsePacket;
 import com.wuyufan.bean.serializer.JSONSerializer;
 import com.wuyufan.bean.serializer.Serializer;
@@ -36,6 +40,10 @@ public class PacketCodeC {
         packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(Command.CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(Command.LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(Command.LOGOUT_RESPONSE, LogoutResponsePacket.class);
 
         serializerMap = new HashMap<>();
         serializerMap.put(Serializer.DEFAULT.getSerializerAlgorithm(), new JSONSerializer());

@@ -15,7 +15,6 @@ public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginRespo
             System.out.println("客户端登录成功 " + msg.getUserId() + ":" + msg.getUserName());
             //channel设置登录标记
             ctx.channel().attr(Attributes.SESSION).set(new Session(msg.getUserId(), msg.getUserName()));
-            NettyClient.LOGIN_FINISH = true;
         } else {
             System.out.println("客户端登录失败：原因" + msg.getReason());
         }
