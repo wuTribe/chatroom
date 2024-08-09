@@ -1,13 +1,11 @@
 package com.wuyufan.client;
 
 import com.wuyufan.bean.Constants;
-import com.wuyufan.bean.packet.request.LoginRequestPacket;
-import com.wuyufan.bean.packet.request.MessageRequestPacket;
 import com.wuyufan.client.command.ConsoleCommandManager;
 import com.wuyufan.client.command.LoginConsoleCommand;
-import com.wuyufan.client.handle.*;
-import com.wuyufan.codec.PacketDecoder;
-import com.wuyufan.codec.PacketEncoder;
+import com.wuyufan.client.handle.IMResponseHandle;
+import com.wuyufan.client.handle.LoginResponseHandler;
+import com.wuyufan.codec.PacketCodecHandler;
 import com.wuyufan.codec.Spliter;
 import com.wuyufan.utils.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
@@ -38,16 +36,9 @@ public class NettyClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new Spliter());
-                        ch.pipeline().addLast(new PacketDecoder());
-                        ch.pipeline().addLast(new LoginResponseHandler());
-                        ch.pipeline().addLast(new CreateGroupResponseHandler());
-                        ch.pipeline().addLast(new LogoutResponseHandler());
-                        ch.pipeline().addLast(new JoinGroupResponseHandler());
-                        ch.pipeline().addLast(new QuitGroupResponseHandle());
-                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
-                        ch.pipeline().addLast(new GroupMessageResponseHandler());
-                        ch.pipeline().addLast(new MessageResponseHandler());
-                        ch.pipeline().addLast(new PacketEncoder());
+                        ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                        ch.pipeline().addLast(LoginResponseHandler.INSTANCE);
+                        ch.pipeline().addLast(IMResponseHandle.INSTANCE);
                     }
                 });
         connect(bootstrap, "127.0.0.1", Constants.SERVER_PORT, 3);

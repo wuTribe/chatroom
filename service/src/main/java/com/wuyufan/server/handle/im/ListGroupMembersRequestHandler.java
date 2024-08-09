@@ -1,16 +1,21 @@
-package com.wuyufan.server.handle;
+package com.wuyufan.server.handle.im;
 
 import com.wuyufan.bean.Session;
 import com.wuyufan.bean.packet.request.ListGroupMembersRequestPacket;
 import com.wuyufan.bean.packet.response.ListGroupMembersResponsePacket;
 import com.wuyufan.utils.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
 import java.util.stream.Collectors;
 
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+
+    public static final ListGroupMembersRequestHandler INSTANCE = new ListGroupMembersRequestHandler();
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupMembersRequestPacket msg) throws Exception {
         //  1.  获取群的ChannelGroup

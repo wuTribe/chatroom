@@ -4,10 +4,14 @@ import com.wuyufan.bean.Attributes;
 import com.wuyufan.bean.Session;
 import com.wuyufan.bean.packet.response.LoginResponsePacket;
 import com.wuyufan.client.NettyClient;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+@ChannelHandler.Sharable
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
+
+    public static final LoginResponseHandler INSTANCE = new LoginResponseHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket msg) throws Exception {

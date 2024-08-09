@@ -1,16 +1,20 @@
-package com.wuyufan.server.handle;
+package com.wuyufan.server.handle.im;
 
 import com.wuyufan.bean.Session;
 import com.wuyufan.bean.packet.request.MessageRequestPacket;
 import com.wuyufan.bean.packet.response.MessageResponsePacket;
 import com.wuyufan.utils.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.time.LocalDateTime;
 
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
+
+    public static final MessageRequestHandler INSTANCE = new MessageRequestHandler();
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket msg) throws Exception {

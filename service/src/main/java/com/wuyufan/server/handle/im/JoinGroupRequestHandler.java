@@ -1,4 +1,4 @@
-package com.wuyufan.server.handle;
+package com.wuyufan.server.handle.im;
 
 import com.wuyufan.bean.packet.request.JoinGroupRequestPacket;
 import com.wuyufan.bean.packet.request.JoinGroupResponsePacket;
@@ -8,6 +8,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
+
+    public static final JoinGroupRequestHandler INSTANCE = new JoinGroupRequestHandler();
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, JoinGroupRequestPacket msg) throws Exception {
         // 获取群组 group，加入到群组
