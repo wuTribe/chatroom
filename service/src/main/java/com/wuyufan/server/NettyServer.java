@@ -1,11 +1,10 @@
 package com.wuyufan.server;
 
 import com.wuyufan.bean.Constants;
+import com.wuyufan.codec.IMIdleStateHandler;
 import com.wuyufan.codec.PacketCodecHandler;
 import com.wuyufan.codec.Spliter;
-import com.wuyufan.server.handle.AuthHandler;
-import com.wuyufan.server.handle.IMRequestHandler;
-import com.wuyufan.server.handle.LoginRequestHandler;
+import com.wuyufan.server.handle.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -30,9 +29,11 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        ch.pipeline().addLast(HeartBeatRequestHandler.INSTANCE);
                         ch.pipeline().addLast(AuthHandler.INSTANCE);
                         ch.pipeline().addLast(IMRequestHandler.INSTANCE);
                     }

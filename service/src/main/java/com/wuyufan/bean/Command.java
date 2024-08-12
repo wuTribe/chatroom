@@ -43,4 +43,10 @@ public interface Command {
     Byte GROUP_MESSAGE_REQUEST = 13;
     /** 群发消息 响应*/
     Byte GROUP_MESSAGE_RESPONSE = 14;
+
+
+    /** 心跳 请求*/
+    Byte HEART_BEAT_REQUEST = 15;
+    /** 心跳 响应*/
+    Byte HEART_BEAT_RESPONSE = 16;
 }

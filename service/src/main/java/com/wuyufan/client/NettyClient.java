@@ -3,6 +3,7 @@ package com.wuyufan.client;
 import com.wuyufan.bean.Constants;
 import com.wuyufan.client.command.ConsoleCommandManager;
 import com.wuyufan.client.command.LoginConsoleCommand;
+import com.wuyufan.client.handle.HeartBeatTimerHandler;
 import com.wuyufan.client.handle.IMResponseHandle;
 import com.wuyufan.client.handle.LoginResponseHandler;
 import com.wuyufan.codec.PacketCodecHandler;
@@ -35,6 +36,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(PacketCodecHandler.INSTANCE);
                         ch.pipeline().addLast(LoginResponseHandler.INSTANCE);
